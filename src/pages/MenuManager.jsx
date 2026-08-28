@@ -16,6 +16,7 @@ export default function MenuManager({
   const [name, setName] = useState('')
   const [emoji, setEmoji] = useState(DEFAULT_EMOJI)
   const [category, setCategory] = useState('')
+  const [ingredients, setIngredients] = useState('')
   const [newCategory, setNewCategory] = useState('')
   const [soldout, setSoldout] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -33,8 +34,9 @@ export default function MenuManager({
     if (!canAdd) return
     setBusy(true)
     try {
-      await addDrink({ name, emoji, category: effectiveCategory, soldout })
+      await addDrink({ name, emoji, category: effectiveCategory, ingredients, soldout })
       setName('')
+      setIngredients('')
       setEmoji(DEFAULT_EMOJI)
       setNewCategory('')
       setSoldout(false)
@@ -82,12 +84,19 @@ export default function MenuManager({
                       <span className={`text-xl ${d.soldout ? 'grayscale opacity-40' : ''}`}>
                         {d.emoji}
                       </span>
-                      <span
-                        className={`flex-1 truncate ${
-                          d.soldout ? 'text-zinc-600 line-through' : ''
-                        }`}
-                      >
-                        {d.name}
+                      <span className="flex-1 min-w-0">
+                        <span
+                          className={`block truncate ${
+                            d.soldout ? 'text-zinc-600 line-through' : ''
+                          }`}
+                        >
+                          {d.name}
+                        </span>
+                        {d.ingredients && (
+                          <span className="block text-xs text-zinc-600 truncate">
+                            {d.ingredients}
+                          </span>
+                        )}
                       </span>
 
                       <button
@@ -157,6 +166,15 @@ export default function MenuManager({
               onChange={(e) => setName(e.target.value)}
               placeholder="Nome (es. Amaro)"
               maxLength={40}
+              className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
+                         outline-none focus:border-zinc-600 placeholder:text-zinc-600"
+            />
+
+            <input
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              placeholder="Ingredienti (es. Gin, Campari, Vermouth rosso)"
+              maxLength={120}
               className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
                          outline-none focus:border-zinc-600 placeholder:text-zinc-600"
             />

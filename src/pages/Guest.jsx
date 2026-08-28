@@ -209,8 +209,15 @@ export default function Guest() {
                   >
                     {drink.emoji}
                   </span>
-                  <span className={`flex-1 font-medium ${out ? 'text-zinc-600 line-through' : ''}`}>
-                    {drink.name}
+                  <span className="flex-1 min-w-0">
+                    <span className={`block font-medium ${out ? 'text-zinc-600 line-through' : ''}`}>
+                      {drink.name}
+                    </span>
+                    {drink.ingredients && (
+                      <span className={`block text-xs mt-0.5 ${out ? 'text-zinc-700' : 'text-zinc-500'}`}>
+                        {drink.ingredients}
+                      </span>
+                    )}
                   </span>
 
                   {out ? (

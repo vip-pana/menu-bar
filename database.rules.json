@@ -5,10 +5,18 @@
       "$id": {
         ".write": true,
         ".validate": "newData.hasChildren(['name','items','status','createdAt'])",
-        "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "note": { ".validate": "newData.isString() && newData.val().length <= 200" },
-        "status": { ".validate": "newData.val() == 'nuovo' || newData.val() == 'in_preparazione' || newData.val() == 'fatto'" },
-        "createdAt": { ".validate": "newData.isNumber()" }
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "note": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "status": {
+          ".validate": "newData.val() == 'nuovo' || newData.val() == 'in_preparazione' || newData.val() == 'fatto'"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        }
       }
     },
     "menu": {
@@ -16,13 +24,30 @@
       ".write": true,
       "$id": {
         ".validate": "newData.hasChildren(['name','category'])",
-        "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "emoji": { ".validate": "newData.isString() && newData.val().length <= 8" },
-        "category": { ".validate": "newData.isString() && newData.val().length <= 30" },
-        "soldout": { ".validate": "newData.isBoolean()" },
-        "deleted": { ".validate": "newData.isBoolean()" },
-        "order": { ".validate": "newData.isNumber()" },
-        "$other": { ".validate": false }
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "emoji": {
+          ".validate": "newData.isString() && newData.val().length <= 8"
+        },
+        "category": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        },
+        "soldout": {
+          ".validate": "newData.isBoolean()"
+        },
+        "deleted": {
+          ".validate": "newData.isBoolean()"
+        },
+        "order": {
+          ".validate": "newData.isNumber()"
+        },
+        "ingredients": {
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     }
   }

@@ -70,7 +70,7 @@ export function useMenu() {
   )
 
   const addDrink = useCallback(
-    ({ name, emoji, category, soldout = false }) => {
+    ({ name, emoji, category, ingredients = '', soldout = false }) => {
       const maxOrder = Object.values(raw).reduce(
         (m, d) => Math.max(m, d.order ?? 0),
         -1,
@@ -79,6 +79,7 @@ export function useMenu() {
         name: name.trim().slice(0, 40),
         emoji: (emoji || DEFAULT_EMOJI).slice(0, 8),
         category: category.trim().slice(0, 30),
+        ingredients: ingredients.trim().slice(0, 120),
         soldout: Boolean(soldout),
         deleted: false,
         order: maxOrder + 1,
