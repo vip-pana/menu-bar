@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ref, update } from 'firebase/database'
 import { db } from '../firebase'
 import { useOrders } from '../useOrders'
+import { useMenu } from '../useMenu'
+import MenuManager from './MenuManager'
 
 const COLUMNS = [
   { status: 'nuovo',           title: 'Nuovi',           accent: 'border-sky-500/60' },
@@ -23,6 +25,7 @@ function time(ts) {
 
 export default function Barista() {
   const { orders, loading, error } = useOrders()
+  const menuApi = useMenu()
   const [showAllDone, setShowAllDone] = useState(false)
   const prevNewCount = useRef(null)
 
@@ -140,6 +143,16 @@ export default function Barista() {
           )
         })}
       </div>
+
+      <MenuManager
+        allDrinks={menuApi.allDrinks}
+        categories={menuApi.categories}
+        addDrink={menuApi.addDrink}
+        toggleSoldout={menuApi.toggleSoldout}
+        softDelete={menuApi.softDelete}
+        restore={menuApi.restore}
+        hardDelete={menuApi.hardDelete}
+      />
     </div>
   )
 }

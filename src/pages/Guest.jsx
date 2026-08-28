@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { push, ref, serverTimestamp } from 'firebase/database'
 import { db } from '../firebase'
-import { CATEGORIES, MENU } from '../menu'
+import { useMenu } from '../useMenu'
 import { useOrders } from '../useOrders'
 
 const STATUS_LABEL = {
@@ -51,12 +51,26 @@ export default function Guest() {
   const [error, setError] = useState(null)
   const [myIds, addMyId] = useMyOrderIds()
   const { orders } = useOrders()
+  const { menu, categories, loading: menuLoading } = useMenu()
 
   useEffect(() => {
     try {
       localStorage.setItem('barName', name)
     } catch { /* private mode: pazienza */ }
   }, [name])
+
+  // Se una bevanda finisce (o viene eliminata) mentre l'ospite sta scegliendo,
+  // toglierla dal carrello: altrimenti si ordina qualcosa che non c'e' piu'.
+  useEffect(() => {
+    if (menuLoading) return
+    const ordinabili = new Set(menu.filter((d) => !d.soldout).map((d) => d.id))
+    setCart((prev) => {
+      const next = Object.fromEntries(
+        Object.entries(prev).filter(([id]) => ordinabili.has(id)),
+      )
+      return Object.keys(next).length === Object.keys(prev).length ? prev : next
+    })
+  }, [menu, menuLoading])
 
   useEffect(() => {
     if (!sent) return
@@ -90,7 +104,7 @@ export default function Guest() {
     setError(null)
     const items = Object.entries(cart).map(([id, qty]) => ({
       id,
-      name: MENU.find((d) => d.id === id)?.name ?? id,
+      name: menu.find((d) => d.id === id)?.name ?? id,
       qty,
     }))
     try {
@@ -160,43 +174,70 @@ export default function Guest() {
         </section>
       )}
 
-      {CATEGORIES.map((cat) => (
+      {menuLoading && (
+        <p className="px-5 mt-8 text-zinc-500">Carico il menu…</p>
+      )}
+
+      {!menuLoading && menu.length === 0 && (
+        <p className="px-5 mt-8 text-zinc-500">
+          Il menu è vuoto. Chiedi al barista di aggiungere qualcosa.
+        </p>
+      )}
+
+      {categories.map((cat) => (
         <section key={cat} className="mt-8">
           <h2 className="px-5 text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-3">
             {cat}
           </h2>
           <ul className="px-5 space-y-2">
-            {MENU.filter((d) => d.category === cat).map((drink) => {
+            {menu.filter((d) => d.category === cat).map((drink) => {
               const qty = cart[drink.id] || 0
+              const out = drink.soldout
               return (
                 <li
                   key={drink.id}
                   className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors
-                    ${qty > 0
-                      ? 'bg-zinc-800/80 border-zinc-600'
-                      : 'bg-zinc-900/60 border-zinc-800'}`}
+                    ${out
+                      ? 'bg-zinc-900/30 border-zinc-800/60'
+                      : qty > 0
+                        ? 'bg-zinc-800/80 border-zinc-600'
+                        : 'bg-zinc-900/60 border-zinc-800'}`}
                 >
-                  <span className="text-2xl" aria-hidden="true">{drink.emoji}</span>
-                  <span className="flex-1 font-medium">{drink.name}</span>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => setQty(drink.id, -1)}
-                      disabled={qty === 0}
-                      aria-label={`Togli ${drink.name}`}
-                      className="size-11 rounded-lg bg-zinc-800 text-xl leading-none
-                                 disabled:opacity-30 active:bg-zinc-700"
-                    >
-                      −
-                    </button>
-                    <span className="w-8 text-center tabular-nums font-semibold">{qty}</span>
-                    <button
-                      onClick={() => setQty(drink.id, 1)}
-                      aria-label={`Aggiungi ${drink.name}`}
-                      className="size-11 rounded-lg bg-zinc-700 text-xl leading-none active:bg-zinc-600"
-                    >
-                      +
-                    </button>
-                  </div>
+                  <span
+                    className={`text-2xl ${out ? 'grayscale opacity-40' : ''}`}
+                    aria-hidden="true"
+                  >
+                    {drink.emoji}
+                  </span>
+                  <span className={`flex-1 font-medium ${out ? 'text-zinc-600 line-through' : ''}`}>
+                    {drink.name}
+                  </span>
+
+                  {out ? (
+                    <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500 px-2.5 py-1 rounded-full bg-zinc-800/80">
+                      Esaurito
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setQty(drink.id, -1)}
+                        disabled={qty === 0}
+                        aria-label={`Togli ${drink.name}`}
+                        className="size-11 rounded-lg bg-zinc-800 text-xl leading-none
+                                   disabled:opacity-30 active:bg-zinc-700"
+                      >
+                        −
+                      </button>
+                      <span className="w-8 text-center tabular-nums font-semibold">{qty}</span>
+                      <button
+                        onClick={() => setQty(drink.id, 1)}
+                        aria-label={`Aggiungi ${drink.name}`}
+                        className="size-11 rounded-lg bg-zinc-700 text-xl leading-none active:bg-zinc-600"
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
                 </li>
               )
             })}

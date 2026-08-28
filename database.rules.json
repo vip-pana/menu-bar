@@ -10,6 +10,20 @@
         "status": { ".validate": "newData.val() == 'nuovo' || newData.val() == 'in_preparazione' || newData.val() == 'fatto'" },
         "createdAt": { ".validate": "newData.isNumber()" }
       }
+    },
+    "menu": {
+      ".read": true,
+      ".write": true,
+      "$id": {
+        ".validate": "newData.hasChildren(['name','category'])",
+        "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "emoji": { ".validate": "newData.isString() && newData.val().length <= 8" },
+        "category": { ".validate": "newData.isString() && newData.val().length <= 30" },
+        "soldout": { ".validate": "newData.isBoolean()" },
+        "deleted": { ".validate": "newData.isBoolean()" },
+        "order": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
     }
   }
 }

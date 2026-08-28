@@ -1,18 +1,30 @@
-// Menu della festa. Per cambiarlo: edita qui e rideploya.
-// Gli `id` finiscono negli ordini salvati: non riusarli per bevande diverse.
-export const MENU = [
-  { id: 'spritz',    name: 'Spritz',          emoji: '🧡', category: 'Cocktail' },
-  { id: 'negroni',   name: 'Negroni',         emoji: '🍸', category: 'Cocktail' },
-  { id: 'gintonic',  name: 'Gin Tonic',       emoji: '🍹', category: 'Cocktail' },
-  { id: 'mojito',    name: 'Mojito',          emoji: '🌿', category: 'Cocktail' },
-  { id: 'birra',     name: 'Birra',           emoji: '🍺', category: 'Alcolici' },
-  { id: 'vino_r',    name: 'Vino rosso',      emoji: '🍷', category: 'Alcolici' },
-  { id: 'vino_b',    name: 'Vino bianco',     emoji: '🥂', category: 'Alcolici' },
-  { id: 'prosecco',  name: 'Prosecco',        emoji: '🍾', category: 'Alcolici' },
-  { id: 'cola',      name: 'Coca Cola',       emoji: '🥤', category: 'Analcolici' },
-  { id: 'aranciata', name: 'Aranciata',       emoji: '🍊', category: 'Analcolici' },
-  { id: 'acqua',     name: 'Acqua',           emoji: '💧', category: 'Analcolici' },
-  { id: 'analcolico',name: 'Spritz analcolico', emoji: '🍊', category: 'Analcolici' },
+// Menu di PARTENZA (seed).
+//
+// La verita' a runtime e' il nodo /menu su Firebase: il barista lo modifica dal
+// bancone. Questo array viene scritto sul DB solo la prima volta, quando /menu
+// e' ancora vuoto (vedi seedIfEmpty in useMenu.js).
+//
+// Editare qui NON cambia il menu di una festa gia' avviata: per quello si usa
+// la sezione "Menu" nella pagina /#/barista.
+export const SEED_MENU = [
+  { name: 'Spritz',            emoji: '🧡', category: 'Cocktail' },
+  { name: 'Negroni',           emoji: '🍸', category: 'Cocktail' },
+  { name: 'Gin Tonic',         emoji: '🍹', category: 'Cocktail' },
+  { name: 'Mojito',            emoji: '🌿', category: 'Cocktail' },
+  { name: 'Birra',             emoji: '🍺', category: 'Alcolici' },
+  { name: 'Vino rosso',        emoji: '🍷', category: 'Alcolici' },
+  { name: 'Vino bianco',       emoji: '🥂', category: 'Alcolici' },
+  { name: 'Prosecco',          emoji: '🍾', category: 'Alcolici' },
+  { name: 'Coca Cola',         emoji: '🥤', category: 'Analcolici' },
+  { name: 'Aranciata',         emoji: '🍊', category: 'Analcolici' },
+  { name: 'Acqua',             emoji: '💧', category: 'Analcolici' },
+  { name: 'Spritz analcolico', emoji: '🍊', category: 'Analcolici' },
 ]
 
-export const CATEGORIES = [...new Set(MENU.map((d) => d.category))]
+// Emoji proposte nel form "Aggiungi bevanda".
+export const EMOJI_CHOICES = [
+  '🍹', '🍸', '🍺', '🍷', '🥂', '🍾', '🥃', '🍶',
+  '🥤', '🧃', '💧', '☕', '🍊', '🍋', '🌿', '🧡',
+]
+
+export const DEFAULT_EMOJI = '🥤'
