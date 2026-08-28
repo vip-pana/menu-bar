@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ref, update } from 'firebase/database'
 import { db } from '../firebase'
 import { useOrders } from '../useOrders'
 import { useMenu } from '../useMenu'
+import { resetTheme } from '../theme'
 import MenuManager from './MenuManager'
 
 const COLUMNS = [
@@ -24,6 +25,12 @@ function time(ts) {
 }
 
 export default function Barista() {
+  // Il bancone e' sempre cyan: se si arriva qui dal menu ospite la SPA non
+  // ricarica, quindi va ripulito il tema che l'ospite aveva applicato.
+  useLayoutEffect(() => {
+    resetTheme()
+  }, [])
+
   const { orders, loading, error } = useOrders()
   const menuApi = useMenu()
   const [doneOpen, setDoneOpen] = useState(false)

@@ -33,3 +33,13 @@ export function applyTheme(theme) {
   r.setProperty('--volt-soft', theme.soft)
   r.setProperty('--volt-deep', theme.deep)
 }
+
+// Rimuove le variabili inline e torna ai default cyan di :root.
+// Serve al bancone: navigando dall'ospite a #/barista la SPA non ricarica,
+// quindi le variabili del tema ospite resterebbero appiccicate al root.
+export function resetTheme() {
+  const r = document.documentElement.style
+  r.removeProperty('--volt')
+  r.removeProperty('--volt-soft')
+  r.removeProperty('--volt-deep')
+}
