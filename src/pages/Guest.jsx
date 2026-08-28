@@ -10,9 +10,9 @@ const STATUS_LABEL = {
   fatto: 'Pronto! Vai al bancone',
 }
 const STATUS_STYLE = {
-  nuovo: 'bg-zinc-800 text-zinc-300',
-  in_preparazione: 'bg-amber-500/20 text-amber-300',
-  fatto: 'bg-emerald-500/20 text-emerald-300',
+  nuovo: 'bg-volt/15 text-volt-soft',
+  in_preparazione: 'bg-amber-400/15 text-amber-300',
+  fatto: 'bg-emerald-400/15 text-emerald-300',
 }
 
 // Gli id degli ordini inviati da QUESTO dispositivo, per mostrarne lo stato.
@@ -148,15 +148,23 @@ export default function Guest() {
 
   return (
     <div className="min-h-dvh flex flex-col">
-      <header className="px-5 pt-8 pb-4">
-        <h1 className="text-3xl font-bold tracking-tight">Ordina da bere 🍹</h1>
-        <p className="text-zinc-400 text-sm mt-1">
+      <header className="px-5 pt-10 pb-5">
+        <h1 className="text-5xl font-black tracking-tighter leading-none">
+          Marta{' '}
+          <span className="text-volt [text-shadow:0_0_24px_rgba(34,211,238,.55)]">
+            22
+          </span>
+        </h1>
+        <p className="mt-3 text-frost-dim font-medium uppercase tracking-[0.2em] text-xs">
+          Ordina da bere
+        </p>
+        <p className="text-frost-mute text-sm mt-1.5">
           Scegli, scrivi il tuo nome, invia. Il barista pensa al resto.
         </p>
       </header>
 
       <div className="px-5">
-        <label className="block text-sm font-medium text-zinc-300 mb-2">
+        <label className="block text-sm font-medium text-frost-dim mb-2">
           Il tuo nome
         </label>
         <input
@@ -164,21 +172,21 @@ export default function Guest() {
           onChange={(e) => setName(e.target.value)}
           placeholder="Come ti chiami?"
           maxLength={40}
-          className="w-full rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-lg
-                     outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+          className="w-full rounded-xl bg-ink-raised border border-ink-edge px-4 py-3 text-lg
+                     outline-none focus:border-volt/60 placeholder:text-frost-mute"
         />
       </div>
 
       {myOrders.length > 0 && (
         <section className="px-5 mt-6">
-          <h2 className="text-sm font-medium text-zinc-400 mb-2">I tuoi ordini</h2>
+          <h2 className="text-sm font-medium text-frost-dim mb-2">I tuoi ordini</h2>
           <ul className="space-y-2">
             {myOrders.map((o) => (
               <li
                 key={o.id}
-                className="flex items-center gap-3 rounded-xl bg-zinc-900/60 px-4 py-3"
+                className="flex items-center gap-3 rounded-xl bg-ink-raised/70 border border-ink-edge px-4 py-3"
               >
-                <span className="flex-1 min-w-0 text-sm text-zinc-300">
+                <span className="flex-1 min-w-0 text-sm text-frost-dim">
                   {o.items?.map((i) => `${i.qty}× ${i.name}`).join(', ')}
                 </span>
 
@@ -203,8 +211,8 @@ export default function Guest() {
                     <button
                       onClick={() => setConfirmId(o.id)}
                       aria-label="Annulla ordine"
-                      className="rounded-lg bg-zinc-800 text-zinc-400 text-xs px-3 py-2
-                                 whitespace-nowrap active:bg-zinc-700"
+                      className="rounded-lg bg-ink-edge text-frost-mute text-xs px-3 py-2
+                                 whitespace-nowrap active:bg-ink-edge/70"
                     >
                       Annulla
                     </button>
@@ -216,18 +224,18 @@ export default function Guest() {
       )}
 
       {menuLoading && (
-        <p className="px-5 mt-8 text-zinc-500">Carico il menu…</p>
+        <p className="px-5 mt-8 text-frost-mute">Carico il menu…</p>
       )}
 
       {!menuLoading && menu.length === 0 && (
-        <p className="px-5 mt-8 text-zinc-500">
+        <p className="px-5 mt-8 text-frost-mute">
           Il menu è vuoto. Chiedi al barista di aggiungere qualcosa.
         </p>
       )}
 
       {categories.map((cat) => (
         <section key={cat} className="mt-8">
-          <h2 className="px-5 text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-3">
+          <h2 className="px-5 text-xs font-bold uppercase tracking-[0.25em] text-volt/70 mb-3">
             {cat}
           </h2>
           <ul className="px-5 space-y-2">
@@ -239,10 +247,10 @@ export default function Guest() {
                   key={drink.id}
                   className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors
                     ${out
-                      ? 'bg-zinc-900/30 border-zinc-800/60'
+                      ? 'bg-ink-raised/40 border-ink-edge/50'
                       : qty > 0
-                        ? 'bg-zinc-800/80 border-zinc-600'
-                        : 'bg-zinc-900/60 border-zinc-800'}`}
+                        ? 'bg-volt/10 border-volt/50 shadow-glow-sm'
+                        : 'bg-ink-raised/70 border-ink-edge'}`}
                 >
                   <span
                     className={`text-2xl ${out ? 'grayscale opacity-40' : ''}`}
@@ -251,18 +259,18 @@ export default function Guest() {
                     {drink.emoji}
                   </span>
                   <span className="flex-1 min-w-0">
-                    <span className={`block font-medium ${out ? 'text-zinc-600 line-through' : ''}`}>
+                    <span className={`block font-medium ${out ? 'text-frost-mute line-through' : ''}`}>
                       {drink.name}
                     </span>
                     {drink.ingredients && (
-                      <span className={`block text-xs mt-0.5 ${out ? 'text-zinc-700' : 'text-zinc-500'}`}>
+                      <span className={`block text-xs mt-0.5 ${out ? 'text-frost-mute/60' : 'text-frost-mute'}`}>
                         {drink.ingredients}
                       </span>
                     )}
                   </span>
 
                   {out ? (
-                    <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500 px-2.5 py-1 rounded-full bg-zinc-800/80">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-frost-mute px-2.5 py-1 rounded-full bg-ink-edge/80">
                       Esaurito
                     </span>
                   ) : (
@@ -271,8 +279,8 @@ export default function Guest() {
                         onClick={() => setQty(drink.id, -1)}
                         disabled={qty === 0}
                         aria-label={`Togli ${drink.name}`}
-                        className="size-11 rounded-lg bg-zinc-800 text-xl leading-none
-                                   disabled:opacity-30 active:bg-zinc-700"
+                        className="size-11 rounded-lg bg-ink-edge text-frost-dim text-xl leading-none
+                                   disabled:opacity-25 active:bg-ink-edge/70"
                       >
                         −
                       </button>
@@ -280,7 +288,8 @@ export default function Guest() {
                       <button
                         onClick={() => setQty(drink.id, 1)}
                         aria-label={`Aggiungi ${drink.name}`}
-                        className="size-11 rounded-lg bg-zinc-700 text-xl leading-none active:bg-zinc-600"
+                        className="size-11 rounded-lg bg-volt text-ink-base font-bold text-xl leading-none
+                                   active:bg-volt-deep"
                       >
                         +
                       </button>
@@ -294,8 +303,8 @@ export default function Guest() {
       ))}
 
       <section className="px-5 mt-8 mb-4">
-        <label className="block text-sm font-medium text-zinc-300 mb-2">
-          Note per il barista <span className="text-zinc-600">(opzionale)</span>
+        <label className="block text-sm font-medium text-frost-dim mb-2">
+          Note per il barista <span className="text-frost-mute">(opzionale)</span>
         </label>
         <textarea
           value={note}
@@ -303,20 +312,22 @@ export default function Guest() {
           placeholder="senza ghiaccio, poco alcol…"
           rows={2}
           maxLength={200}
-          className="w-full rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3
-                     outline-none focus:border-zinc-500 placeholder:text-zinc-600 resize-none"
+          className="w-full rounded-xl bg-ink-raised border border-ink-edge px-4 py-3
+                     outline-none focus:border-volt/60 placeholder:text-frost-mute resize-none"
         />
       </section>
 
-      <div className="sticky bottom-0 mt-auto p-4 pt-8 bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent">
+      <div className="sticky bottom-0 mt-auto p-4 pt-8 bg-gradient-to-t from-ink-base via-ink-base to-transparent">
         {error && (
           <p className="text-center text-sm text-red-400 mb-2">{error}</p>
         )}
         <button
           onClick={submit}
           disabled={!canSend}
-          className="w-full rounded-2xl bg-emerald-500 text-zinc-950 font-bold text-lg py-4
-                     disabled:bg-zinc-800 disabled:text-zinc-600 active:bg-emerald-400 transition-colors"
+          className="w-full rounded-2xl bg-volt text-ink-base font-black text-lg py-4 shadow-glow
+                     uppercase tracking-wide transition-all
+                     disabled:bg-ink-raised disabled:text-frost-mute disabled:shadow-none
+                     active:bg-volt-deep"
         >
           {sent
             ? 'Ordine inviato! 🍹'

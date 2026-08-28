@@ -6,9 +6,9 @@ import { useMenu } from '../useMenu'
 import MenuManager from './MenuManager'
 
 const COLUMNS = [
-  { status: 'nuovo',           title: 'Nuovi',           accent: 'border-sky-500/60' },
-  { status: 'in_preparazione', title: 'In preparazione', accent: 'border-amber-500/60' },
-  { status: 'fatto',           title: 'Fatti',           accent: 'border-emerald-500/60' },
+  { status: 'nuovo',           title: 'Nuovi',           accent: 'border-volt' },
+  { status: 'in_preparazione', title: 'In preparazione', accent: 'border-amber-400/70' },
+  { status: 'fatto',           title: 'Fatti',           accent: 'border-emerald-400/60' },
 ]
 
 const NEXT = { nuovo: 'in_preparazione', in_preparazione: 'fatto' }
@@ -55,8 +55,8 @@ export default function Barista() {
   return (
     <div className="min-h-dvh p-4">
       <header className="flex items-baseline justify-between mb-4 px-1">
-        <h1 className="text-2xl font-bold tracking-tight">Bancone 🍸</h1>
-        <p className={`text-sm ${error ? 'text-red-400' : 'text-zinc-500'}`}>
+        <h1 className="text-2xl font-black tracking-tight">Bancone 🍸</h1>
+        <p className={`text-sm ${error ? 'text-red-400' : 'text-frost-mute'}`}>
           {error
             ? 'Connessione persa'
             : loading
@@ -81,22 +81,22 @@ export default function Barista() {
 
           return (
             <section key={col.status} className="min-w-0">
-              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-2 px-1">
+              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-frost-dim mb-2 px-1">
                 {done ? (
                   <button
                     onClick={() => setDoneOpen((v) => !v)}
                     className="flex items-center gap-2 uppercase tracking-wider"
                   >
-                    <span className="text-zinc-500 text-xs leading-none">
+                    <span className="text-frost-mute text-xs leading-none">
                       {doneOpen ? '▾' : '▸'}
                     </span>
                     {col.title}
-                    <span className="text-zinc-600 tabular-nums">{all.length}</span>
+                    <span className="text-frost-mute tabular-nums">{all.length}</span>
                   </button>
                 ) : (
                   <>
                     {col.title}
-                    <span className="text-zinc-600 tabular-nums">{all.length}</span>
+                    <span className="text-frost-mute tabular-nums">{all.length}</span>
                   </>
                 )}
               </h2>
@@ -106,16 +106,16 @@ export default function Barista() {
                   done ? (
                     <li
                       key={o.id}
-                      className="flex items-baseline gap-2 rounded-lg bg-zinc-900/50 px-3 py-2 text-sm"
+                      className="flex items-baseline gap-2 rounded-lg bg-ink-raised/50 px-3 py-2 text-sm"
                     >
-                      <span className="font-semibold text-zinc-400 truncate">{o.name}</span>
-                      <span className="flex-1 min-w-0 truncate text-zinc-600">
+                      <span className="font-semibold text-frost-dim truncate">{o.name}</span>
+                      <span className="flex-1 min-w-0 truncate text-frost-mute">
                         {o.items?.map((i) => `${i.qty}× ${i.name}`).join(', ')}
                       </span>
                       <button
                         onClick={() => move(o.id, PREV[o.status])}
                         aria-label="Torna indietro"
-                        className="text-zinc-600 px-1.5 shrink-0 active:text-zinc-300"
+                        className="text-frost-mute px-1.5 shrink-0 active:text-frost"
                       >
                         ←
                       </button>
@@ -123,18 +123,18 @@ export default function Barista() {
                   ) : (
                   <li
                     key={o.id}
-                    className={`rounded-xl bg-zinc-900 border-l-4 ${col.accent} p-4`}
+                    className={`rounded-xl bg-ink-raised border border-ink-edge border-l-4 ${col.accent} p-4`}
                   >
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="text-xl font-bold truncate">{o.name}</span>
-                      <span className="text-xs text-zinc-500 tabular-nums shrink-0">
+                      <span className="text-xs text-frost-mute tabular-nums shrink-0">
                         {time(o.createdAt)}
                       </span>
                     </div>
 
                     <ul className="mt-2 space-y-0.5">
                       {o.items?.map((i, idx) => (
-                        <li key={`${i.id}-${idx}`} className="text-zinc-200">
+                        <li key={`${i.id}-${idx}`} className="text-frost">
                           <span className="font-semibold tabular-nums">{i.qty}×</span>{' '}
                           {i.name}
                         </li>
@@ -142,7 +142,7 @@ export default function Barista() {
                     </ul>
 
                     {o.note && (
-                      <p className="mt-2 text-sm bg-amber-500/10 text-amber-200 rounded-lg px-3 py-2">
+                      <p className="mt-2 text-sm bg-amber-400/10 text-amber-200 rounded-lg px-3 py-2">
                         {o.note}
                       </p>
                     )}
@@ -152,7 +152,7 @@ export default function Barista() {
                         <button
                           onClick={() => move(o.id, PREV[o.status])}
                           aria-label="Torna indietro"
-                          className="rounded-lg bg-zinc-800 px-3 py-2.5 text-zinc-400 active:bg-zinc-700"
+                          className="rounded-lg bg-ink-edge px-3 py-2.5 text-frost-dim active:bg-ink-edge/70"
                         >
                           ←
                         </button>
@@ -160,8 +160,8 @@ export default function Barista() {
                       {NEXT[o.status] && (
                         <button
                           onClick={() => move(o.id, NEXT[o.status])}
-                          className="flex-1 rounded-lg bg-zinc-100 text-zinc-900 font-semibold py-2.5
-                                     active:bg-white"
+                          className="flex-1 rounded-lg bg-volt text-ink-base font-bold py-2.5
+                                     active:bg-volt-deep"
                         >
                           {NEXT_LABEL[o.status]}
                         </button>
@@ -172,14 +172,14 @@ export default function Barista() {
                 )}
 
                 {all.length === 0 && !done && (
-                  <li className="text-sm text-zinc-600 px-1 py-4">Niente qui.</li>
+                  <li className="text-sm text-frost-mute px-1 py-4">Niente qui.</li>
                 )}
               </ul>
 
               {done && doneOpen && all.length > DONE_PREVIEW && (
                 <button
                   onClick={() => setShowAllDone((v) => !v)}
-                  className="mt-2 w-full text-sm text-zinc-500 py-2 active:text-zinc-300"
+                  className="mt-2 w-full text-sm text-frost-mute py-2 active:text-frost"
                 >
                   {showAllDone ? 'Mostra meno' : `Mostra tutti (${all.length})`}
                 </button>

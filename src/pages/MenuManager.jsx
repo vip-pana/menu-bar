@@ -48,20 +48,20 @@ export default function MenuManager({
   }
 
   return (
-    <section className="mt-8 border-t border-zinc-800 pt-4">
+    <section className="mt-8 border-t border-ink-edge pt-4">
       <button
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between px-1 py-2 text-left"
       >
-        <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+        <span className="text-sm font-semibold uppercase tracking-wider text-frost-dim">
           Menu
-          <span className="ml-2 text-zinc-600 normal-case tracking-normal">
+          <span className="ml-2 text-frost-mute normal-case tracking-normal">
             {live.length} bevande
             {live.some((d) => d.soldout) &&
               ` · ${live.filter((d) => d.soldout).length} esaurite`}
           </span>
         </span>
-        <span className="text-zinc-500 text-lg leading-none">
+        <span className="text-frost-mute text-lg leading-none">
           {open ? '▾' : '▸'}
         </span>
       </button>
@@ -70,7 +70,7 @@ export default function MenuManager({
         <div className="mt-3 space-y-6">
           {liveCategories.map((cat) => (
             <div key={cat}>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2 px-1">
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-volt/70 mb-2 px-1">
                 {cat}
               </h3>
               <ul className="space-y-1.5">
@@ -79,7 +79,7 @@ export default function MenuManager({
                   .map((d) => (
                     <li
                       key={d.id}
-                      className="flex items-center gap-3 rounded-xl bg-zinc-900 px-3 py-2"
+                      className="flex items-center gap-3 rounded-xl bg-ink-raised border border-ink-edge px-3 py-2"
                     >
                       <span className={`text-xl ${d.soldout ? 'grayscale opacity-40' : ''}`}>
                         {d.emoji}
@@ -87,13 +87,13 @@ export default function MenuManager({
                       <span className="flex-1 min-w-0">
                         <span
                           className={`block truncate ${
-                            d.soldout ? 'text-zinc-600 line-through' : ''
+                            d.soldout ? 'text-frost-mute line-through' : ''
                           }`}
                         >
                           {d.name}
                         </span>
                         {d.ingredients && (
-                          <span className="block text-xs text-zinc-600 truncate">
+                          <span className="block text-xs text-frost-mute truncate">
                             {d.ingredients}
                           </span>
                         )}
@@ -103,8 +103,8 @@ export default function MenuManager({
                         onClick={() => toggleSoldout(d.id, !d.soldout)}
                         className={`rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap
                           ${d.soldout
-                            ? 'bg-emerald-500/20 text-emerald-300 active:bg-emerald-500/30'
-                            : 'bg-zinc-800 text-zinc-300 active:bg-zinc-700'}`}
+                            ? 'bg-emerald-400/20 text-emerald-300 active:bg-emerald-400/30'
+                            : 'bg-ink-edge text-frost-dim active:bg-ink-edge/70'}`}
                       >
                         {d.soldout ? 'Disponibile' : 'Esaurito'}
                       </button>
@@ -112,7 +112,7 @@ export default function MenuManager({
                       <button
                         onClick={() => softDelete(d.id)}
                         aria-label={`Elimina ${d.name}`}
-                        className="rounded-lg bg-zinc-800 px-3 py-2 text-zinc-500 active:bg-red-500/20 active:text-red-300"
+                        className="rounded-lg bg-ink-edge px-3 py-2 text-frost-mute active:bg-red-500/20 active:text-red-300"
                       >
                         🗑
                       </button>
@@ -124,29 +124,29 @@ export default function MenuManager({
 
           {trashed.length > 0 && (
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 px-1">
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-frost-mute mb-2 px-1">
                 Eliminati
               </h3>
               <ul className="space-y-1.5">
                 {trashed.map((d) => (
                   <li
                     key={d.id}
-                    className="flex items-center gap-3 rounded-xl bg-zinc-900/40 px-3 py-2"
+                    className="flex items-center gap-3 rounded-xl bg-ink-raised/40 px-3 py-2"
                   >
                     <span className="text-xl grayscale opacity-40">{d.emoji}</span>
-                    <span className="flex-1 truncate text-zinc-600 line-through">
+                    <span className="flex-1 truncate text-frost-mute line-through">
                       {d.name}
                     </span>
                     <button
                       onClick={() => restore(d.id)}
-                      className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-zinc-300 active:bg-zinc-700"
+                      className="rounded-lg bg-ink-edge px-3 py-2 text-sm text-frost-dim active:bg-ink-edge/70"
                     >
                       Ripristina
                     </button>
                     <button
                       onClick={() => hardDelete(d.id)}
                       aria-label={`Elimina per sempre ${d.name}`}
-                      className="rounded-lg bg-zinc-800/60 px-3 py-2 text-zinc-600 active:bg-red-500/20 active:text-red-300"
+                      className="rounded-lg bg-ink-edge/60 px-3 py-2 text-frost-mute active:bg-red-500/20 active:text-red-300"
                     >
                       ✕
                     </button>
@@ -156,8 +156,8 @@ export default function MenuManager({
             </div>
           )}
 
-          <form onSubmit={submit} className="rounded-xl bg-zinc-900 p-4 space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          <form onSubmit={submit} className="rounded-xl bg-ink-raised border border-ink-edge p-4 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-frost-dim">
               Aggiungi bevanda
             </h3>
 
@@ -166,8 +166,8 @@ export default function MenuManager({
               onChange={(e) => setName(e.target.value)}
               placeholder="Nome (es. Amaro)"
               maxLength={40}
-              className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
-                         outline-none focus:border-zinc-600 placeholder:text-zinc-600"
+              className="w-full rounded-lg bg-ink-base border border-ink-edge px-3 py-2.5
+                         outline-none focus:border-volt/60 placeholder:text-frost-mute"
             />
 
             <input
@@ -175,8 +175,8 @@ export default function MenuManager({
               onChange={(e) => setIngredients(e.target.value)}
               placeholder="Ingredienti (es. Gin, Campari, Vermouth rosso)"
               maxLength={120}
-              className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
-                         outline-none focus:border-zinc-600 placeholder:text-zinc-600"
+              className="w-full rounded-lg bg-ink-base border border-ink-edge px-3 py-2.5
+                         outline-none focus:border-volt/60 placeholder:text-frost-mute"
             />
 
             <div className="flex flex-wrap gap-1.5">
@@ -186,7 +186,7 @@ export default function MenuManager({
                   type="button"
                   onClick={() => setEmoji(e)}
                   className={`size-11 rounded-lg text-xl leading-none
-                    ${emoji === e ? 'bg-zinc-700 ring-2 ring-zinc-500' : 'bg-zinc-950'}`}
+                    ${emoji === e ? 'bg-volt/20 ring-2 ring-volt' : 'bg-ink-base'}`}
                 >
                   {e}
                 </button>
@@ -196,8 +196,8 @@ export default function MenuManager({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
-                         outline-none focus:border-zinc-600"
+              className="w-full rounded-lg bg-ink-base border border-ink-edge px-3 py-2.5
+                         outline-none focus:border-volt/60"
             >
               <option value="">Categoria…</option>
               {categories.map((c) => (
@@ -214,17 +214,17 @@ export default function MenuManager({
                 onChange={(e) => setNewCategory(e.target.value)}
                 placeholder="Nome nuova categoria"
                 maxLength={30}
-                className="w-full rounded-lg bg-zinc-950 border border-zinc-800 px-3 py-2.5
-                           outline-none focus:border-zinc-600 placeholder:text-zinc-600"
+                className="w-full rounded-lg bg-ink-base border border-ink-edge px-3 py-2.5
+                           outline-none focus:border-volt/60 placeholder:text-frost-mute"
               />
             )}
 
-            <label className="flex items-center gap-2.5 text-sm text-zinc-400">
+            <label className="flex items-center gap-2.5 text-sm text-frost-dim">
               <input
                 type="checkbox"
                 checked={soldout}
                 onChange={(e) => setSoldout(e.target.checked)}
-                className="size-5 rounded accent-zinc-500"
+                className="size-5 rounded accent-volt"
               />
               Aggiungi come già esaurita
             </label>
@@ -232,8 +232,8 @@ export default function MenuManager({
             <button
               type="submit"
               disabled={!canAdd}
-              className="w-full rounded-lg bg-zinc-100 text-zinc-900 font-semibold py-2.5
-                         disabled:bg-zinc-800 disabled:text-zinc-600 active:bg-white"
+              className="w-full rounded-lg bg-volt text-ink-base font-bold py-2.5
+                         disabled:bg-ink-edge disabled:text-frost-mute active:bg-volt-deep"
             >
               {busy ? 'Aggiungo…' : 'Aggiungi'}
             </button>

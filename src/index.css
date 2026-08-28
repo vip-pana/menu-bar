@@ -3,4 +3,16 @@
 @tailwind utilities;
 
 html { -webkit-text-size-adjust: 100%; }
-body { @apply bg-zinc-950 text-zinc-100 antialiased; }
+
+body {
+  @apply bg-ink-base text-frost antialiased;
+  /* Alone cyan molto tenue in alto: da' profondita' senza disturbare la lettura. */
+  background-image: radial-gradient(
+    120% 60% at 50% -10%,
+    rgba(34, 211, 238, 0.13),
+    transparent 60%
+  );
+  background-attachment: fixed;
+}
+
+::selection { @apply bg-volt text-ink-base; }
