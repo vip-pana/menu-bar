@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { push, ref, serverTimestamp } from 'firebase/database'
+import { push, ref, remove, serverTimestamp } from 'firebase/database'
 import { db } from '../firebase'
 import { useMenu } from '../useMenu'
 import { useOrders } from '../useOrders'
@@ -24,16 +24,15 @@ function useMyOrderIds() {
       return []
     }
   })
-  const add = (id) => {
-    setIds((prev) => {
-      const next = [...prev, id].slice(-10)
-      try {
-        localStorage.setItem('myOrderIds', JSON.stringify(next))
-      } catch { /* private mode: pazienza */ }
-      return next
-    })
+  const persist = (next) => {
+    try {
+      localStorage.setItem('myOrderIds', JSON.stringify(next))
+    } catch { /* private mode: pazienza */ }
+    return next
   }
-  return [ids, add]
+  const add = (id) => setIds((prev) => persist([...prev, id].slice(-10)))
+  const drop = (id) => setIds((prev) => persist(prev.filter((x) => x !== id)))
+  return [ids, add, drop]
 }
 
 export default function Guest() {
@@ -49,7 +48,8 @@ export default function Guest() {
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState(null)
-  const [myIds, addMyId] = useMyOrderIds()
+  const [confirmId, setConfirmId] = useState(null)
+  const [myIds, addMyId, dropMyId] = useMyOrderIds()
   const { orders } = useOrders()
   const { menu, categories, loading: menuLoading } = useMenu()
 
@@ -97,6 +97,25 @@ export default function Guest() {
     () => orders.filter((o) => myIds.includes(o.id)).slice(-5).reverse(),
     [orders, myIds],
   )
+
+  // La conferma inline si annulla da sola: evita di lasciare un bottone
+  // "Confermi?" armato mentre l'ospite scorre il menu.
+  useEffect(() => {
+    if (!confirmId) return
+    const t = setTimeout(() => setConfirmId(null), 4000)
+    return () => clearTimeout(t)
+  }, [confirmId])
+
+  async function cancelOrder(id) {
+    try {
+      await remove(ref(db, `orders/${id}`))
+      dropMyId(id)
+      setConfirmId(null)
+    } catch (e) {
+      console.error('[orders] annullamento fallito', e)
+      setError('Non sono riuscito ad annullare. Riprova.')
+    }
+  }
 
   async function submit() {
     if (!canSend) return
@@ -157,17 +176,39 @@ export default function Guest() {
             {myOrders.map((o) => (
               <li
                 key={o.id}
-                className="flex items-center justify-between rounded-xl bg-zinc-900/60 px-4 py-3"
+                className="flex items-center gap-3 rounded-xl bg-zinc-900/60 px-4 py-3"
               >
-                <span className="text-sm text-zinc-300">
+                <span className="flex-1 min-w-0 text-sm text-zinc-300">
                   {o.items?.map((i) => `${i.qty}× ${i.name}`).join(', ')}
                 </span>
+
                 <span
-                  className={`text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap ml-3
+                  className={`text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap
                               ${STATUS_STYLE[o.status] || STATUS_STYLE.nuovo}`}
                 >
                   {STATUS_LABEL[o.status] || o.status}
                 </span>
+
+                {/* Annullabile solo finche' il barista non l'ha preso in carico. */}
+                {o.status === 'nuovo' &&
+                  (confirmId === o.id ? (
+                    <button
+                      onClick={() => cancelOrder(o.id)}
+                      className="rounded-lg bg-red-500/20 text-red-300 text-xs font-semibold
+                                 px-3 py-2 whitespace-nowrap active:bg-red-500/30"
+                    >
+                      Confermi?
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setConfirmId(o.id)}
+                      aria-label="Annulla ordine"
+                      className="rounded-lg bg-zinc-800 text-zinc-400 text-xs px-3 py-2
+                                 whitespace-nowrap active:bg-zinc-700"
+                    >
+                      Annulla
+                    </button>
+                  ))}
               </li>
             ))}
           </ul>
