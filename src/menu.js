@@ -7,18 +7,21 @@
 // Editare qui NON cambia il menu di una festa gia' avviata: per quello si usa
 // la sezione "Menu" nella pagina /#/barista.
 export const SEED_MENU = [
-  { name: 'Spritz',            emoji: '🧡', category: 'Cocktail' },
-  { name: 'Negroni',           emoji: '🍸', category: 'Cocktail' },
-  { name: 'Gin Tonic',         emoji: '🍹', category: 'Cocktail' },
-  { name: 'Mojito',            emoji: '🌿', category: 'Cocktail' },
-  { name: 'Birra',             emoji: '🍺', category: 'Alcolici' },
-  { name: 'Vino rosso',        emoji: '🍷', category: 'Alcolici' },
-  { name: 'Vino bianco',       emoji: '🥂', category: 'Alcolici' },
-  { name: 'Prosecco',          emoji: '🍾', category: 'Alcolici' },
-  { name: 'Coca Cola',         emoji: '🥤', category: 'Analcolici' },
-  { name: 'Aranciata',         emoji: '🍊', category: 'Analcolici' },
-  { name: 'Acqua',             emoji: '💧', category: 'Analcolici' },
-  { name: 'Spritz analcolico', emoji: '🍊', category: 'Analcolici' },
+  // Aperitivi / Bitter (Campari - Aperol - Vermouth)
+  { name: 'Americano',                emoji: '🍊', category: 'Aperitivi' },
+  { name: 'Negroni',                  emoji: '🍸', category: 'Aperitivi' },
+  { name: 'Negroni sbagliato',        emoji: '🥂', category: 'Aperitivi' },
+  { name: 'Milano-Torino',            emoji: '🧡', category: 'Aperitivi' },
+  // Sour
+  { name: 'Whisky Sour',              emoji: '🥃', category: 'Sour' },
+  { name: 'Fireman Sour',             emoji: '🔥', category: 'Sour' },
+  { name: 'Blood orange Whisky sour', emoji: '🩸', category: 'Sour' },
+  // Highball & Long drinks
+  { name: 'Gin Tonic',                emoji: '🍹', category: 'Highball & Long drinks' },
+  { name: 'Gin Fizz',                 emoji: '🍋', category: 'Highball & Long drinks' },
+  { name: 'Tom Collins',              emoji: '🥤', category: 'Highball & Long drinks' },
+  { name: 'Moscow Mule',              emoji: '🫚', category: 'Highball & Long drinks' },
+  { name: 'Cuba Libre',               emoji: '🥤', category: 'Highball & Long drinks' },
 ]
 
 // Emoji proposte nel form "Aggiungi bevanda".
