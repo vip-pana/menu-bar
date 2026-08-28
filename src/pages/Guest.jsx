@@ -178,7 +178,7 @@ export default function Guest() {
 
       <header className="px-5 pt-10 pb-5">
         <h1 className="text-4xl sm:text-5xl font-black tracking-tighter leading-[1.05] text-balance">
-          <span className="text-volt [text-shadow:0_0_24px_rgb(var(--volt)/.55)]">
+          <span className="rainbow-text text-volt [text-shadow:0_0_24px_rgb(var(--volt)/.55)]">
             {phrase}
           </span>
         </h1>
@@ -376,7 +376,7 @@ export default function Guest() {
         <button
           onClick={submit}
           disabled={!canSend}
-          className="w-full rounded-2xl bg-volt text-ink-base font-black text-lg py-4 shadow-glow
+          className="rainbow-fill w-full rounded-2xl bg-volt text-ink-base font-black text-lg py-4 shadow-glow
                      uppercase tracking-wide transition-all
                      disabled:bg-ink-raised disabled:text-frost-mute disabled:shadow-none
                      active:bg-volt-deep"

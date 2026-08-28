@@ -19,6 +19,19 @@ export const THEMES = [
   { name: 'acqua',   base: '45 212 191',  soft: '94 234 212',  deep: '15 118 110'  },
   { name: 'corallo', base: '255 138 128', soft: '255 171 164', deep: '190 55 45'   },
   { name: 'azzurro', base: '96 165 250',  soft: '147 197 253', deep: '29 78 216'   },
+  { name: 'lavanda', base: '216 180 254', soft: '233 213 255', deep: '126 34 206'  },
+  { name: 'pesca',   base: '253 186 116', soft: '254 215 170', deep: '180 83 9'    },
+  { name: 'indaco',  base: '129 140 248', soft: '165 180 252', deep: '67 56 202'   },
+  { name: 'fucsia',  base: '240 80 180',  soft: '246 145 208', deep: '157 23 108'  },
+  { name: 'oro',     base: '253 230 138', soft: '254 240 190', deep: '161 98 7'    },
+  // L'arcobaleno: `rainbow` accende i gradienti su titolo e superfici piene.
+  // base/soft/deep restano una tinta solida di ripiego, perche' bordi, ombre e
+  // colori con opacita' hanno bisogno di un colore singolo, non di un gradiente.
+  {
+    name: 'rainbow',
+    base: '255 106 193', soft: '255 170 220', deep: '190 24 93',
+    rainbow: 'linear-gradient(100deg,#FF5F6D,#FFC371,#F9F871,#5EE7A0,#4FC3F7,#B388FF,#FF5F6D)',
+  },
 ]
 
 export function randomTheme() {
@@ -32,6 +45,13 @@ export function applyTheme(theme) {
   r.setProperty('--volt', theme.base)
   r.setProperty('--volt-soft', theme.soft)
   r.setProperty('--volt-deep', theme.deep)
+  if (theme.rainbow) {
+    r.setProperty('--rainbow', theme.rainbow)
+    document.documentElement.dataset.rainbow = 'on'
+  } else {
+    r.removeProperty('--rainbow')
+    delete document.documentElement.dataset.rainbow
+  }
 }
 
 // Rimuove le variabili inline e torna ai default cyan di :root.
@@ -42,4 +62,6 @@ export function resetTheme() {
   r.removeProperty('--volt')
   r.removeProperty('--volt-soft')
   r.removeProperty('--volt-deep')
+  r.removeProperty('--rainbow')
+  delete document.documentElement.dataset.rainbow
 }

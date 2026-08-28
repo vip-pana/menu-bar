@@ -49,3 +49,30 @@ body {
   animation-timing-function: cubic-bezier(.15,.6,.4,1);
   animation-fill-mode: forwards;
 }
+
+/* Tema arcobaleno: il gradiente sostituisce la tinta piatta su titolo e
+   superfici piene. Tutto il resto (bordi, ombre, colori con opacita') continua
+   a usare --volt, che nel tema rainbow e' una tinta solida di ripiego. */
+[data-rainbow='on'] .rainbow-text {
+  background-image: var(--rainbow);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-slide 6s linear infinite;
+}
+
+[data-rainbow='on'] .rainbow-fill {
+  background-image: var(--rainbow);
+  background-size: 200% 100%;
+  animation: rainbow-slide 6s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  to { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rainbow='on'] .rainbow-text,
+  [data-rainbow='on'] .rainbow-fill { animation: none; }
+}
