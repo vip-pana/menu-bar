@@ -104,6 +104,11 @@ export default function Guest() {
     [orders, myIds],
   )
 
+  const doneCount = useMemo(
+    () => myOrders.filter((o) => o.status === 'fatto').length,
+    [myOrders],
+  )
+
   // La conferma inline si annulla da sola: evita di lasciare un bottone
   // "Confermi?" armato mentre l'ospite scorre il menu.
   useEffect(() => {
@@ -111,6 +116,13 @@ export default function Guest() {
     const t = setTimeout(() => setConfirmId(null), 4000)
     return () => clearTimeout(t)
   }, [confirmId])
+
+  // "Fatto" nella lista dell'ospite = smetti di seguirlo. L'ordine resta
+  // nel bancone di Jack: qui si toglie solo la notifica dal proprio telefono.
+  const dismissOrder = (id) => dropMyId(id)
+
+  const dismissAllDone = () =>
+    myOrders.filter((o) => o.status === 'fatto').forEach((o) => dropMyId(o.id))
 
   async function cancelOrder(id) {
     try {
@@ -187,7 +199,17 @@ export default function Guest() {
 
       {myOrders.length > 0 && (
         <section className="px-5 mt-6">
-          <h2 className="text-sm font-medium text-frost-dim mb-2">I tuoi ordini</h2>
+          <div className="flex items-baseline justify-between gap-3 mb-2">
+            <h2 className="text-sm font-medium text-frost-dim">I tuoi ordini</h2>
+            {doneCount > 1 && (
+              <button
+                onClick={dismissAllDone}
+                className="text-xs text-frost-mute px-2 py-1 -mr-2 active:text-frost"
+              >
+                Pulisci i pronti ({doneCount})
+              </button>
+            )}
+          </div>
           <ul className="space-y-2">
             {myOrders.map((o) => (
               <li
@@ -204,6 +226,18 @@ export default function Guest() {
                 >
                   {STATUS_LABEL[o.status] || o.status}
                 </span>
+
+                {/* Pronto: si toglie dalla lista, ma resta nel bancone di Jack. */}
+                {o.status === 'fatto' && (
+                  <button
+                    onClick={() => dismissOrder(o.id)}
+                    aria-label="Togli dalla lista"
+                    className="rounded-lg bg-ink-edge text-frost-mute text-xs px-3 py-2
+                               whitespace-nowrap active:bg-ink-edge/70 active:text-frost"
+                  >
+                    ✕
+                  </button>
+                )}
 
                 {/* Annullabile solo finche' il barista non l'ha preso in carico. */}
                 {o.status === 'nuovo' &&
