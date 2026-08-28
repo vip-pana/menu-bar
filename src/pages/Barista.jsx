@@ -26,7 +26,10 @@ function time(ts) {
 export default function Barista() {
   const { orders, loading, error } = useOrders()
   const menuApi = useMenu()
+  const [doneOpen, setDoneOpen] = useState(false)
   const [showAllDone, setShowAllDone] = useState(false)
+
+  const DONE_PREVIEW = 5
   const prevNewCount = useRef(null)
 
   const byStatus = useMemo(() => {
@@ -65,18 +68,59 @@ export default function Barista() {
       <div className="grid gap-4 md:grid-cols-3">
         {COLUMNS.map((col) => {
           const all = byStatus[col.status]
-          const list =
-            col.status === 'fatto' && !showAllDone ? all.slice(0, 10) : all
+          const done = col.status === 'fatto'
+          // I fatti servono solo come storico: chiusi di default, e comunque
+          // in versione compatta per non rubare spazio a chi deve lavorare.
+          const list = done
+            ? doneOpen
+              ? showAllDone
+                ? all
+                : all.slice(0, DONE_PREVIEW)
+              : []
+            : all
 
           return (
             <section key={col.status} className="min-w-0">
               <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-400 mb-2 px-1">
-                {col.title}
-                <span className="text-zinc-600 tabular-nums">{all.length}</span>
+                {done ? (
+                  <button
+                    onClick={() => setDoneOpen((v) => !v)}
+                    className="flex items-center gap-2 uppercase tracking-wider"
+                  >
+                    <span className="text-zinc-500 text-xs leading-none">
+                      {doneOpen ? '▾' : '▸'}
+                    </span>
+                    {col.title}
+                    <span className="text-zinc-600 tabular-nums">{all.length}</span>
+                  </button>
+                ) : (
+                  <>
+                    {col.title}
+                    <span className="text-zinc-600 tabular-nums">{all.length}</span>
+                  </>
+                )}
               </h2>
 
               <ul className="space-y-2">
-                {list.map((o) => (
+                {list.map((o) =>
+                  done ? (
+                    <li
+                      key={o.id}
+                      className="flex items-baseline gap-2 rounded-lg bg-zinc-900/50 px-3 py-2 text-sm"
+                    >
+                      <span className="font-semibold text-zinc-400 truncate">{o.name}</span>
+                      <span className="flex-1 min-w-0 truncate text-zinc-600">
+                        {o.items?.map((i) => `${i.qty}× ${i.name}`).join(', ')}
+                      </span>
+                      <button
+                        onClick={() => move(o.id, PREV[o.status])}
+                        aria-label="Torna indietro"
+                        className="text-zinc-600 px-1.5 shrink-0 active:text-zinc-300"
+                      >
+                        ←
+                      </button>
+                    </li>
+                  ) : (
                   <li
                     key={o.id}
                     className={`rounded-xl bg-zinc-900 border-l-4 ${col.accent} p-4`}
@@ -124,14 +168,15 @@ export default function Barista() {
                       )}
                     </div>
                   </li>
-                ))}
+                  ),
+                )}
 
-                {all.length === 0 && (
+                {all.length === 0 && !done && (
                   <li className="text-sm text-zinc-600 px-1 py-4">Niente qui.</li>
                 )}
               </ul>
 
-              {col.status === 'fatto' && all.length > 10 && (
+              {done && doneOpen && all.length > DONE_PREVIEW && (
                 <button
                   onClick={() => setShowAllDone((v) => !v)}
                   className="mt-2 w-full text-sm text-zinc-500 py-2 active:text-zinc-300"
