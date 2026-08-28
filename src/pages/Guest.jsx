@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { push, ref, remove, serverTimestamp } from 'firebase/database'
 import { db } from '../firebase'
 import { useMenu } from '../useMenu'
+import { useOverscroll } from '../useOverscroll'
 import { useOrders } from '../useOrders'
 
 const STATUS_LABEL = {
@@ -52,6 +53,7 @@ export default function Guest() {
   const [myIds, addMyId, dropMyId] = useMyOrderIds()
   const { orders } = useOrders()
   const { menu, categories, loading: menuLoading } = useMenu()
+  const { progress } = useOverscroll()
 
   useEffect(() => {
     try {
@@ -342,6 +344,28 @@ export default function Guest() {
             Scrivi il tuo nome per inviare
           </p>
         )}
+      </div>
+
+      {/* Easter egg: appare solo insistendo a scorrere oltre il fondo. */}
+      <div
+        aria-hidden={progress < 1}
+        className="overflow-hidden transition-[height] duration-200 ease-out"
+        style={{ height: `${progress * 92}px` }}
+      >
+        <div
+          className="h-[92px] flex flex-col items-center justify-center gap-1"
+          style={{ opacity: progress ** 2 }}
+        >
+          <p
+            className="text-volt font-black tracking-[0.3em] text-sm uppercase text-center px-4"
+            style={{ textShadow: `0 0 ${18 * progress}px rgba(34,211,238,.7)` }}
+          >
+            Wonderful tonight
+          </p>
+          <p className="text-frost-mute text-[11px] tracking-widest uppercase">
+            ♪ buon compleanno Marta ♪
+          </p>
+        </div>
       </div>
     </div>
   )
