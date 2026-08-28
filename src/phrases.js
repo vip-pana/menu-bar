@@ -10,6 +10,7 @@ export const PHRASES = [
   'Escape',
   'MOR TA',
   'Ma totalee',
+  'A POCO DAUS',
 ]
 
 export function randomPhrase() {
