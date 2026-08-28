@@ -16,3 +16,14 @@ body {
 }
 
 ::selection { @apply bg-volt text-ink-base; }
+
+/* Emoji che volano via dal bottone + */
+@keyframes emoji-pop {
+  0%   { transform: translate(-50%, -50%) scale(.4);                     opacity: 0; }
+  15%  { transform: translate(-50%, -50%) scale(1.15);                   opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+                    rotate(var(--rot)) scale(.7);                        opacity: 0; }
+}
+.animate-emoji-pop {
+  animation: emoji-pop 800ms cubic-bezier(.2,.7,.35,1) forwards;
+}

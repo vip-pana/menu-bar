@@ -3,6 +3,8 @@ import { push, ref, remove, serverTimestamp } from 'firebase/database'
 import { db } from '../firebase'
 import { useMenu } from '../useMenu'
 import { useOverscroll } from '../useOverscroll'
+import { randomPhrase } from '../phrases'
+import { useEmojiBurst } from '../EmojiBurst'
 import { useOrders } from '../useOrders'
 
 const STATUS_LABEL = {
@@ -54,6 +56,8 @@ export default function Guest() {
   const { orders } = useOrders()
   const { menu, categories, loading: menuLoading } = useMenu()
   const { progress } = useOverscroll()
+  const [phrase] = useState(randomPhrase)
+  const { burst, layer } = useEmojiBurst()
 
   useEffect(() => {
     try {
@@ -150,11 +154,12 @@ export default function Guest() {
 
   return (
     <div className="min-h-dvh flex flex-col">
+      {layer}
+
       <header className="px-5 pt-10 pb-5">
-        <h1 className="text-5xl font-black tracking-tighter leading-none">
-          Marta{' '}
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tighter leading-[1.05] text-balance">
           <span className="text-volt [text-shadow:0_0_24px_rgba(34,211,238,.55)]">
-            22
+            {phrase}
           </span>
         </h1>
         <p className="mt-3 text-frost-dim font-medium uppercase tracking-[0.2em] text-xs">
@@ -288,10 +293,13 @@ export default function Guest() {
                       </button>
                       <span className="w-8 text-center tabular-nums font-semibold">{qty}</span>
                       <button
-                        onClick={() => setQty(drink.id, 1)}
+                        onClick={(e) => {
+                          setQty(drink.id, 1)
+                          burst(e.currentTarget, drink.emoji)
+                        }}
                         aria-label={`Aggiungi ${drink.name}`}
                         className="size-11 rounded-lg bg-volt text-ink-base font-bold text-xl leading-none
-                                   active:bg-volt-deep"
+                                   active:bg-volt-deep active:scale-95 transition-transform"
                       >
                         +
                       </button>
@@ -363,7 +371,7 @@ export default function Guest() {
             Wonderful tonight
           </p>
           <p className="text-frost-mute text-[11px] tracking-widest uppercase">
-            ♪ buon compleanno Marta ♪
+            ♪ STRADAUSS ♪
           </p>
         </div>
       </div>
