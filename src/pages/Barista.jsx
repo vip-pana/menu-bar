@@ -48,20 +48,49 @@ export default function Barista() {
     prevNewCount.current = n
   }, [byStatus.nuovo.length])
 
+  const toDo = byStatus.nuovo.length + byStatus.in_preparazione.length
+
+  // Il conteggio nel titolo della tab: utile quando il tablet e' su un'altra app.
+  useEffect(() => {
+    document.title = toDo > 0 ? `(${toDo}) Jack's bar` : "Jack's bar"
+    return () => { document.title = 'Marta 22' }
+  }, [toDo])
+
   const move = (id, status) => {
     update(ref(db, `orders/${id}`), { status }).catch(console.error)
   }
 
   return (
     <div className="min-h-dvh p-4">
-      <header className="flex items-baseline justify-between mb-4 px-1">
-        <h1 className="text-2xl font-black tracking-tight">Bancone 🍸</h1>
-        <p className={`text-sm ${error ? 'text-red-400' : 'text-frost-mute'}`}>
+      <header className="flex items-baseline justify-between gap-3 mb-4 px-1">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-black tracking-tight truncate">
+            Jack&apos;s bar{' '}
+            <span className="text-volt [text-shadow:0_0_18px_rgba(34,211,238,.5)]">
+              🍸
+            </span>
+          </h1>
+          <p className="text-[11px] uppercase tracking-[0.25em] text-frost-mute mt-0.5">
+            Marta 22
+          </p>
+        </div>
+
+        <p
+          className={`text-sm shrink-0 tabular-nums ${
+            error
+              ? 'text-red-400'
+              : toDo > 0
+                ? 'text-volt font-semibold'
+                : 'text-frost-mute'
+          }`}
+        >
           {error
             ? 'Connessione persa'
             : loading
               ? 'Carico…'
-              : `${byStatus.nuovo.length + byStatus.in_preparazione.length} da fare`}
+              : toDo > 0
+                ? `${toDo} da fare`
+                : 'Tutto fatto ✓'}
         </p>
       </header>
 
