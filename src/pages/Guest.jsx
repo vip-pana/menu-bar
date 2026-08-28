@@ -57,7 +57,7 @@ export default function Guest() {
   const { menu, categories, loading: menuLoading } = useMenu()
   const { progress } = useOverscroll()
   const [phrase] = useState(randomPhrase)
-  const { burst, layer } = useEmojiBurst()
+  const { burst, confetti, layer } = useEmojiBurst()
 
   useEffect(() => {
     try {
@@ -144,6 +144,7 @@ export default function Guest() {
       setCart({})
       setNote('')
       setSent(true)
+      confetti()
     } catch (e) {
       setError("Ordine non inviato. Controlla la connessione e riprova.")
       console.error(e)

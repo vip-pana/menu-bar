@@ -27,3 +27,17 @@ body {
 .animate-emoji-pop {
   animation: emoji-pop 800ms cubic-bezier(.2,.7,.35,1) forwards;
 }
+
+/* Coriandoli: salgono dal basso, ricadono e ruotano */
+@keyframes confetti {
+  0%   { transform: translate(0, 0) rotate(0deg);                              opacity: 0; }
+  10%  {                                                                        opacity: 1; }
+  45%  { transform: translate(calc(var(--dx) * .6), calc(var(--rise) * -1))
+                    rotate(calc(var(--rot) * .5));                              opacity: 1; }
+  100% { transform: translate(var(--dx), 40px) rotate(var(--rot));              opacity: 0; }
+}
+.animate-confetti {
+  animation-name: confetti;
+  animation-timing-function: cubic-bezier(.15,.6,.4,1);
+  animation-fill-mode: forwards;
+}
