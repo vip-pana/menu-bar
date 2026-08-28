@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "orders": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['name','items','status','createdAt'])",
+        "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "note": { ".validate": "newData.isString() && newData.val().length <= 200" },
+        "status": { ".validate": "newData.val() == 'nuovo' || newData.val() == 'in_preparazione' || newData.val() == 'fatto'" },
+        "createdAt": { ".validate": "newData.isNumber()" }
+      }
+    }
+  }
+}
