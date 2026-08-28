@@ -16,15 +16,17 @@ export default {
           mute: '#748899',
         },
         // L'accento della festa.
+        // Guidati da variabili CSS: il lato ospite le riscrive a ogni
+        // caricamento (vedi src/theme.js). Il bancone usa i default in :root.
         volt: {
-          DEFAULT: '#22D3EE',
-          soft: '#67E8F9',
-          deep: '#0891B2',
+          DEFAULT: 'rgb(var(--volt) / <alpha-value>)',
+          soft: 'rgb(var(--volt-soft) / <alpha-value>)',
+          deep: 'rgb(var(--volt-deep) / <alpha-value>)',
         },
       },
       boxShadow: {
-        glow: '0 0 20px -2px rgba(34, 211, 238, .45)',
-        'glow-sm': '0 0 12px -3px rgba(34, 211, 238, .5)',
+        glow: '0 0 20px -2px rgb(var(--volt) / .45)',
+        'glow-sm': '0 0 12px -3px rgb(var(--volt) / .5)',
       },
     },
   },

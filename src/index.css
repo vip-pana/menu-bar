@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Default cyan: valgono per il bancone, che non riscrive nulla.
+   Il lato ospite li sovrascrive a ogni caricamento (src/theme.js). */
+:root {
+  --volt: 34 211 238;
+  --volt-soft: 103 232 249;
+  --volt-deep: 8 145 178;
+}
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -9,7 +17,7 @@ body {
   /* Alone cyan molto tenue in alto: da' profondita' senza disturbare la lettura. */
   background-image: radial-gradient(
     120% 60% at 50% -10%,
-    rgba(34, 211, 238, 0.13),
+    rgb(var(--volt) / 0.13),
     transparent 60%
   );
   background-attachment: fixed;

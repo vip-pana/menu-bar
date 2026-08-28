@@ -1,7 +1,16 @@
 import { useCallback, useRef, useState } from 'react'
 
 // Cyan della festa piu' qualche colore caldo che stacca sul nero.
-const CONFETTI_COLORS = ['#22D3EE', '#67E8F9', '#E8F4F8', '#FBBF24', '#F472B6', '#A78BFA']
+// I primi due seguono l'accento del refresh corrente, gli altri restano fissi
+// per dare varieta' all'esplosione qualunque sia il tema.
+const CONFETTI_COLORS = [
+  'rgb(var(--volt))',
+  'rgb(var(--volt-soft))',
+  '#E8F4F8',
+  '#FBBF24',
+  '#F472B6',
+  '#A78BFA',
+]
 
 // Emoji che schizzano via dal punto in cui si e' premuto.
 // Posizione fixed calcolata dal rect del bottone: non serve un contenitore

@@ -1,0 +1,35 @@
+// Accenti che ruotano a ogni caricamento della pagina ospite.
+//
+// Ogni terna e' "R G B" (numeri separati da spazio, non esadecimale): serve
+// perche' Tailwind li usa come rgb(var(--volt) / <alpha-value>), e cosi'
+// continuano a funzionare le varianti tipo bg-volt/15 o border-volt/50.
+//
+// Vincoli rispettati da tutti:
+//  - almeno 4.5:1 su ink-base (#07090F): la festa e' al buio
+//  - il testo scuro sul bottone pieno resta leggibile
+//  - niente rosso puro (= errore) ne' verde puro (= ordine pronto)
+export const THEMES = [
+  { name: 'cyan',    base: '34 211 238',  soft: '103 232 249', deep: '8 145 178'   },
+  { name: 'magenta', base: '232 121 249', soft: '240 171 252', deep: '162 28 175'  },
+  { name: 'lime',    base: '163 230 53',  soft: '190 242 100', deep: '101 163 13'  },
+  { name: 'arancio', base: '251 146 60',  soft: '253 186 116', deep: '194 65 12'   },
+  { name: 'viola',   base: '167 139 250', soft: '196 181 253', deep: '109 40 217'  },
+  { name: 'rosa',    base: '244 114 182', soft: '249 168 212', deep: '190 24 93'   },
+  { name: 'giallo',  base: '250 204 21',  soft: '253 224 71',  deep: '161 98 7'    },
+  { name: 'acqua',   base: '45 212 191',  soft: '94 234 212',  deep: '15 118 110'  },
+  { name: 'corallo', base: '255 138 128', soft: '255 171 164', deep: '190 55 45'   },
+  { name: 'azzurro', base: '96 165 250',  soft: '147 197 253', deep: '29 78 216'   },
+]
+
+export function randomTheme() {
+  return THEMES[Math.floor(Math.random() * THEMES.length)]
+}
+
+// Scrive le variabili sul root: da li' le leggono sia Tailwind che il CSS
+// scritto a mano (gradiente di fondo, glow, coriandoli).
+export function applyTheme(theme) {
+  const r = document.documentElement.style
+  r.setProperty('--volt', theme.base)
+  r.setProperty('--volt-soft', theme.soft)
+  r.setProperty('--volt-deep', theme.deep)
+}

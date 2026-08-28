@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { push, ref, remove, serverTimestamp } from 'firebase/database'
 import { db } from '../firebase'
 import { useMenu } from '../useMenu'
 import { useOverscroll } from '../useOverscroll'
 import { randomPhrase } from '../phrases'
+import { applyTheme, randomTheme } from '../theme'
 import { useEmojiBurst } from '../EmojiBurst'
 import { useOrders } from '../useOrders'
 
@@ -57,6 +58,12 @@ export default function Guest() {
   const { menu, categories, loading: menuLoading } = useMenu()
   const { progress } = useOverscroll()
   const [phrase] = useState(randomPhrase)
+  const [theme] = useState(randomTheme)
+
+  // Prima della prima pittura: evita il lampo di cyan sul tema scelto.
+  useLayoutEffect(() => {
+    applyTheme(theme)
+  }, [theme])
   const { burst, confetti, layer } = useEmojiBurst()
 
   useEffect(() => {
@@ -171,7 +178,7 @@ export default function Guest() {
 
       <header className="px-5 pt-10 pb-5">
         <h1 className="text-4xl sm:text-5xl font-black tracking-tighter leading-[1.05] text-balance">
-          <span className="text-volt [text-shadow:0_0_24px_rgba(34,211,238,.55)]">
+          <span className="text-volt [text-shadow:0_0_24px_rgb(var(--volt)/.55)]">
             {phrase}
           </span>
         </h1>
@@ -401,7 +408,7 @@ export default function Guest() {
         >
           <p
             className="text-volt font-black tracking-[0.3em] text-sm uppercase text-center px-4"
-            style={{ textShadow: `0 0 ${18 * progress}px rgba(34,211,238,.7)` }}
+            style={{ textShadow: `0 0 ${18 * progress}px rgb(var(--volt) / .7)` }}
           >
             Wonderful tonight
           </p>
